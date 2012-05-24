@@ -25,6 +25,10 @@
             <input type="submit" value="Log in" />
         </form>
         {% if noverify %}<a href="/signup/resend_key/{{ username }}">Resend Activation Key</a><br />{% else %}
-        <a href="/signup/">Sign up</a>{% endif %}
-        FACEBOOK BUTTON
+	<a href="/signup/">Sign up</a>{% endif %}
+	{% include 'django_facebook/_facebook_js.html' %}
+        <form action="{% url facebook_connect %}?facebook_login=1" method="post">
+	    <a href="javascript:void(0);" style="font-size: 20px;" onclick="F.connect(this.parentNode);">Connect with facebook.</a>
+	    <input type="hidden" value="{{ request.path }}" name="next" />
+	</form>
 {% endblock content %}

@@ -11,17 +11,6 @@ from django.contrib.auth.views import password_reset, password_reset_done, \
 from django.views.generic.simple import direct_to_template
 from core.forms import CustomSetPasswordForm
 
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "13 August 2011"
-
 
 urlpatterns = patterns('core.views',
     (r'^$', 'index'),

@@ -13,17 +13,6 @@ from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.db import models
 
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "13 August 2011"
-
 
 def currency(value):
     # Original filter code found at  http://djangosnippets.org/snippets/2365/

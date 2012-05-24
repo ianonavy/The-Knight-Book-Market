@@ -13,17 +13,6 @@ from django_facebook.models import FacebookProfileModel
 #import facebook
 from knightbookmarket import settings
 
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "13 August 2011"
-
 
 def load_page(request, template, extra={}):
     """Special page rendering function for bookstore application pages.
@@ -86,18 +75,12 @@ def generate_new_key(user):
 
 
 
-def share(request, message, attachment={}):
-    user = facebook.get_user_from_cookie(request.COOKIES,
-        getattr(settings, 'FACEBOOK_APP_ID', settings.FACEBOOK_API_KEY),
-        settings.FACEBOOK_SECRET_KEY)
-
-    if user:
-        graph = facebook.GraphAPI(user["access_token"])
-        profile = graph.get_object("me")
-        friends = graph.get_connections("me", "friends")
-
+def share(request, message):
+    facebook_graph = get_facebook_graph(request)
+    if facebook_graph:
+        
         try:
-            graph.put_wall_post(message, attachment)
+            graph.set('me/feed', message=message)
         except:
             raise
 

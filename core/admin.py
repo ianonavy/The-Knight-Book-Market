@@ -11,18 +11,6 @@ from django.contrib import admin
 from core.models import UserProfile, Course, Sale, Offer
 
 
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "13 August 2011"
-
-
 class CourseAdmin(admin.ModelAdmin):
     """Admin form configuration for the Course model."""
 

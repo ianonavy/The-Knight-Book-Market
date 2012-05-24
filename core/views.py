@@ -30,18 +30,7 @@ from core.utils import message_page, generate_new_key,\
     title_case, currency
 from knightbookmarket.settings import SITE_ROOT
 #from socialregistration.models import FacebookProfile
-#import facebook
-
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "17 October 2011"
+from django_facebook.api import *
 
 
 def index(request, flash=None):
@@ -69,7 +58,7 @@ def index(request, flash=None):
                 profile.save()
         except:
             error = "There was an error loading your user profile!"
-
+        
         # Sort sales into "selling" and "sold" accordingly
         for sale in Sale.objects.filter(merchant=request.user):
             offers = Offer.objects.filter(sale=sale)

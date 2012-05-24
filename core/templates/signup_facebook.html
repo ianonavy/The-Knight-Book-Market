@@ -21,7 +21,7 @@
     <!--{% load facebook_tags %}{% facebook_button %}{% facebook_js %}-->
     {% include 'django_facebook/_facebook_js.html' %}
     <form action="{% url facebook_connect %}?facebook_login=1" method="post">
-        <a href="javascript:void(0);" style="font-size: 20px;" onclick="F.connect(this.parentNode);">Register, login or connect with facebook</a>
-        <input type="hidden" value="{{ request.path }}" name="next" />
+	<a href="javascript:void(0);" style="font-size: 20px;" onclick="F.connect(this.parentNode);">Register, login or connect with facebook</a>
+	<input type="hidden" value="{{ request.path }}" name="next" />
     </form>
 {% endblock content %}
