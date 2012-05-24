@@ -5,6 +5,8 @@ import django
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
 
 password_file = open(os.path.join(SITE_ROOT, 'passwords.txt'))
 def next_password():
@@ -19,20 +21,20 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-next_password()
+#next_password()
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(SITE_ROOT, 'development.db')
-    }
     #'default': {
-    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #    'NAME': 'dotcloud',
-    #    'USER': 'root',
-    #    'PASSWORD': next_password(),
-    #    'HOST': 'knightbookmarket-ianonavy.dotcloud.com',
-    #    'PORT': '11810',
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(SITE_ROOT, 'development.db')
     #}
+    'default': {
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dotcloud',
+        'USER': 'root',
+        'PASSWORD': next_password(),
+        'HOST': 'knightbookmarket-ianonavy.dotcloud.com',
+        'PORT': '11810',
+    }
 }
 
 
@@ -45,12 +47,12 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_ROOT = '/home/dotcloud/media'
+MEDIA_ROOT = '/home/dotcloud/data/media'
 MEDIA_URL = '/media/'
-STATIC_ROOT = ''
+STATIC_ROOT = '/home/dotcloud/volatile/static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'static'),
+    os.path.join(PROJECT_ROOT, 'static'),
 )
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
