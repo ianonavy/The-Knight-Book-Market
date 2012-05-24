@@ -1,0 +1,9 @@
+form #donate_form{
+    display: inline;
+}
+
+input#donate {
+    border: none;
+    background: none;
+    box-shadow: none;
+}

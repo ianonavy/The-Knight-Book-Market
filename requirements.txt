@@ -1,0 +1,4 @@
+django
+PIL==1.1.7
+django-facebook
+django-registration

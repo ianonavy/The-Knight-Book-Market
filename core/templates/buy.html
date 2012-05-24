@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block links %}{% endblock links %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/buy.css" />
+{% endblock %}
+
+{% block content %}
+    <p id="question">Do you already have an account here?</p>
+
+    <div id="button_wrapper">
+        <a href="/signup/" id="signup" class="button">No, sign me up please!</a>
+        <a href="/browse/" id="browse" class="button">No, browse as guest.</a><br />
+        <a href="/login/" id="login" class="button">Yes, I do! Log me in!</a>
+    </div>
+{% endblock content %}

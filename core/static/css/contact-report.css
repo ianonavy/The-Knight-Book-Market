@@ -1,0 +1,12 @@
+#main {
+    text-align: center;
+}
+
+label {
+    display: inline;
+}
+
+#submit {
+    display: block;
+    margin: 0 auto;
+}

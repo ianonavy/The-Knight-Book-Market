@@ -1,0 +1,73 @@
+#main {
+    text-align: left;
+}
+
+section {
+    padding: 2em;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+#instructions {
+    margin: 0;
+    padding: 0;
+    font-style: italic;
+    font-size: .9em;
+}
+
+#instructions_details, #expires_details {
+    display: none;
+    font-size: .9em;
+}
+
+#id_title {
+    width: 28.4em;
+}
+
+#id_isbn {
+    width: 10em;
+}
+
+#id_price {
+    width: 3em;
+}
+
+#id_image {
+    width: 17.6em;
+}
+
+#id_expires {
+    width: 2em;
+}
+
+#id_notes {
+    width: 100%;
+}
+
+#submit {
+    display: block;
+    margin: .25em 0 0;
+    width: auto;
+    padding: .25em 1em;
+    font-size: 1.5em;
+}
+
+label, input {
+    display: inline;
+}
+
+label {
+    margin: .5em .5em .5em 0;
+}
+
+input[type="file"] {
+    background: inherit;
+    border: none;
+    border-radius: 4px;
+    padding: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}

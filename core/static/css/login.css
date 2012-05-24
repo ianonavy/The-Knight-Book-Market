@@ -1,0 +1,21 @@
+#main {
+    text-align: center;
+}
+
+form a {
+    margin-right: 8px;
+}
+
+.connect-button input {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    display: inline;
+}
+
+.connect-button {
+    width: 194px;
+    margin: 1em auto 0;
+}

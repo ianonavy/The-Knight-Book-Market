@@ -1,0 +1,69 @@
+input {
+    display: inline;
+    width: 95%;
+    margin: 1%;
+    padding: 8px;
+    font-size: 1em;
+    text-align: left;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.cell {
+    display: table-cell;
+}
+
+input[type="submit"] {
+    width: 3em;
+    padding: 6px 12px;
+    font-size: 1.5em;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 3em;
+}
+
+h2 {
+    color: #333;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+p {
+    margin: 1em 0 0 0;
+}
+
+ul.disclaimers {
+    list-style: square;
+    font-size: .85em;
+}
+
+#signup_facebook {
+    width: 194px;
+    margin: .25em auto;
+}
+
+input[type="image"] {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    display: inline;
+    width: 194px;
+}
+
+#signup {
+    margin: 0;
+    padding: 0;
+}
+
+#signup .col3 {
+    width: 33%;
+    float: left;
+    margin-bottom: 1.5em;
+}

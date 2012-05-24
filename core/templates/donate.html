@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %} | Donate{% endblock title %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/donate.css" />
+{% endblock %}
+
+{% block content %}
+    <h1>Donations</h1>
+    <p>Yes! We do take donations. You are in no way shape or form obligated to give a dime to this site, but it helps a lot. This site won't be free to put on the Internet forever, so any donation will help. Besides, we helped you save quite a bit of money, so we're certain you could spare a dollar or two (or ten).</p>
+    <p>If you would like to donate to the creator of this website, please find <a href="http://www.facebok.com/ianaval">Ian Adam Naval</a> somewhere on campus, or drop him a message on Facebook.</p>
+    <p>You can also send donations through PayPal by clicking this button:</p>
+    <form id="donate_form" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+	<input id="donate" type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+	<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+{% endblock content %}

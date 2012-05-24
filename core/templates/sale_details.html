@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load bookmarket_extras %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/sale_details.css" />
+{% endblock %}
+
+{% block main %}
+<section id="main" class="row">
+    <div class="column col3span2">
+        <span class="merchant">{{ sale.merchant.get_full_name }}</span> is selling
+        <h1 class="title">{{ sale.title|title_case }}</h1>
+        {% if sale.image %}<img src="{{ sale.image|scale:'200x200' }}" id="cover" alt="Image of the book." />{% endif %}
+        <span class="condition">{{ sale.condition|lower }}</span> for only
+        <span class="price">{{ sale.price|currency }}</span> until
+        <span class="expiration">{{ sale.expires|date:"F j, Y" }}</span>.
+
+        <p><label>Course:</label> {{ sale.course|title_case }}
+        {% if sale.isbn %}<p><label>ISBN:</label> {{ sale.isbn }}</p>{% endif %}
+        {% if sale.notes %}<p><label>Notes:</label> {{ sale.notes }}</p>{% endif %}
+        {% if sale.matches_official %}<p>This book matches the one found on MBS Direct.</p>{% endif %}
+    </div><div class="column col3">
+        <br />
+        <h1>Offers</h1>
+        <table>{% for offer in offers %}
+            <tr>
+                <td>{{ offer.price|currency }}</td>
+                <td>{{ offer.buyer.get_full_name }}</td>
+                {% if viewer == "merchant" %}<td>
+                    <a href="/offer/accept/{{ offer.id }}" id="accept" class="button">Accept</a>
+                </td>{% endif %}
+                {% if viewer == "made_offer" %}{% if offer.buyer == user%}<td>
+                    <a href="/offer/cancel/{{ offer.id }}" id="cancel" class="button">Cancel</a>
+                </td>{% else %}<td>&nbsp;</td>{% endif %}{% endif %}
+            </tr>
+        {% empty %}
+            <tr><td>No offers yet!</td></tr>
+        {% endfor %}</table>
+        {% if viewer == "merchant" %}
+            <a href="/sale/cancel/{{ sale.id }}" class="button">Cancel Sale</a>
+        {% endif %}
+        {% if viewer == "guest" %}
+            <a href="/signup/" id="signup" class="button">Sign up to offer</a>
+        {% endif %}
+        {% if viewer == "no_offer" %}
+        <form id="offer" action="/offer/new/{{ sale.id}}/" method="post">
+            {% csrf_token %}
+            $<input id="price" type="text" name="price" />
+            <input id="submit" type="submit" value="Offer" />
+        </form>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock main %}

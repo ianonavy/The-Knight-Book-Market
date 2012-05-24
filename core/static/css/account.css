@@ -1,0 +1,15 @@
+#main {
+    text-align: center;
+}
+
+label {
+    display: inline;
+}
+
+p {
+    text-align: left;
+}
+
+p.center {
+    text-align: center;
+}

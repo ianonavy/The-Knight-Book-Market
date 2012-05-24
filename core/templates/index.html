@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load bookmarket_extras %}
+
+{% block extrastyle %}
+    <link href='http://fonts.googleapis.com/css?family=Volkhov' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+{% endblock %}
+
+{% block extrascript %}
+    <script src="/static/js/index.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block main %}
+{% if user and user.is_active %}
+<div id="main">
+    {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
+    <div class="row">
+        <div class="column col2">
+            <h1>Selling</h1>
+            <table id="selling">
+                <tr><td>&nbsp;</td><td>Title</td><td>Offers</td><td>Highest</td></tr>
+                {% for sale in selling %}
+                    <tr>
+                        <td>{% if sale.image %}<img src="{{ sale.image|scale:'64x64' }}" class="thumbnail" alt="Image of {{ sale.title|title_case }}" />{% endif %}</td>
+                        <td><a href="/browse/{{ sale.id }}/" class="title" >{{ sale.title|title_case }}</a></td>
+                        <td>{{ sale.offers }}</td>
+                        <td>{% if sale.highest %}{{ sale.highest|currency }}{% else %}n/a{% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">You are currently selling no books.</td></tr>
+                {% endfor %}
+            </table>
+
+            <a href="/sale/new/" class="button">Sell More Books</a>
+        </div>
+        <div class="column col2">
+            <h1>Buying</h1>
+            <table id="buying">
+                <tr><td>&nbsp;</td><td>Title</td><td>My Offer</td><td>Highest</td></tr>
+                {% for offer in buying %}
+                    <tr>
+                        <td>{% if offer.sale.image %}<img src="{{ offer.sale.image|scale:'64x64' }}" class="thumbnail" alt="Image of {{ offer.sale.title|title_case }}" />{% endif %}</td>
+                        <td><a href="/browse/{{ offer.sale.id }}/" class="title" >{{ offer.sale.title|title_case }}</a></td>
+                        <td>{% if offer.price != offer.highest %}<span class="not_highest">{{ offer.price|currency }}{% else %}{{ offer.price|currency }}{% endif %}</td>
+                        <td>{% if offer.price != offer.highest %}<span class="not_highest">{{ offer.highest|currency }}</span>{% else %}{{ offer.highest|currency }}{% endif %}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">You are currently buying no books.</td></tr>
+                {% endfor %}
+            </table>
+            <a href="/browse/" class="button">Browse For More</a>
+        </div>
+    </div>
+</div>
+{% if bought or sold %}
+<div id="past" class="row">
+
+    <div class="column col2">
+        <h1>Sold</h1>
+        <table id="sold">
+            <tr><td>&nbsp;</td><td>Title</td><td>Price</td><td>Buyer</td><td>&nbsp;</td></tr>
+            {% for sale in sold %}
+                <tr>
+                    <td>{% if sale.image %}<img src="{{ sale.image|scale:'64x64' }}" class="thumbnail" alt="Image of {{ sale.title|title_case }}"  />{% endif %}</td>
+                    <td><span class="title">{{ sale.title|title_case }}</span></td>
+                    <td>{{ sale.price|currency }}</td>
+                    <td>{{ sale.buyer }}</td>
+                    <td><a href="/sale/remove/{{ sale.id }}/"><img src="http://www.freeiconsweb.com/Icons-show/blueberry/close_delete_2.png" alt="Remove"></a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">You haven't sold any books yet!</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="column col2">
+    <h1>Bought</h1>
+    <table id="bought">
+        <tr><td>&nbsp;</td><td>Title</td><td>Price</td><td>Seller</td><td>&nbsp;</td></tr>
+        {% for offer in bought %}
+            <tr>
+                <td>{% if offer.sale.image %}<img src="{{ offer.sale.image|scale:'64x64' }}" class="thumbnail" alt="Image of {{ offer.sale.title|title_case }}" />{% endif %}</td>
+                <td><span class="title">{{ offer.sale.title|title_case }}</span></td>
+                <td>{{ offer.price|currency }}</td>
+                <td>{{ offer.sale.merchant.get_full_name }}</td>
+                <td><a href="/sale/remove/{{ offer.sale.id }}/"><img src="http://www.freeiconsweb.com/Icons-show/blueberry/close_delete_2.png" alt="Remove"></a></td>
+            </tr>
+        {% empty %}
+           <tr><td colspan="5">You haven't bought any books yet!</td></tr>
+        {% endfor %}
+    </table>
+    </div>
+</div>
+{% endif %}
+{% else %}
+<div id="main">
+    <p id="headline">Help fight greedy corporate America! Be awesome, save money, and buy and sell your books directly to and from your peers.</p>
+    <a href="/buy/" id="buy" class="button">Buy</a>
+    <a href="/signup/" id="sell" class="button">Sell</a>
+</div>
+{% endif %}
+{% endblock main %}

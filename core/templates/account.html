@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/account.css" />
+{% endblock %}
+
+{% block main %}
+<section id="main">
+    <h1>Edit Account</h1>
+    {% if error %}<div class="error_box">{{ error }}</div>{% endif %}
+    <form id="account" action="/account/" method="post">{% csrf_token %}
+        <label>Email: </label>{{ user.email }}
+        <label for="id_phone">Phone: </label>{{ form.phone }}
+        <input id="submit" type="submit" value="Edit">
+    </form>
+    <a href="#">Change Password</a>
+    <div class="row">
+        <div class="column col2"><h2>Buyers</h2>
+        <p>Your contact information is automatically exchanged between you and
+        the seller if they choose to accept your offer or if his or her listing
+        expires and you had placed the highest offer at the time.</p></div>
+
+        <div class="column col2"><h2>Sellers</h2>
+        <p>Your contact information is automatically exchanged between you and
+        the buy whose offer you choose to accept. If your listing expires,
+        the buyer with the highest offer is automatically chosen.</p></div>
+    </div>
+    <p class="center"><a href="/account/disable/">Temporarily disable my account.</a></p>
+    <p>Your account can be reactivated once you log back in, but any sales or
+    offers you have pending will automatically be cancelled.</p>
+</section>
+{% endblock main %}

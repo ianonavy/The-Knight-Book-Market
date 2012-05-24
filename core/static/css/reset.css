@@ -1,0 +1,7 @@
+label {
+    display: inline;
+}
+
+.button, input[type="submit"] {
+    width: auto;
+}

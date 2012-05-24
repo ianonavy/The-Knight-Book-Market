@@ -1,0 +1,25 @@
+#main {
+    text-align: center;
+}
+
+#question {
+    font-size: 2em;
+    margin: 0 0 .5em 0;
+}
+
+#button_wrapper {
+    width: 600px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.button {
+    font-size: 2em;
+    margin: 1.5%;
+    padding: 3.5%;
+    width: 39%;
+}
+
+#login {
+    width: 89%;
+}

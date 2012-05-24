@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/sell.css" />
+{% endblock %}
+
+{% block extrascript %}
+    <script src="/static/js/sell.js" type="text/javascript" />
+{% endblock extrascript %}
+
+{% block main %}
+<div id="main" class="section">
+    <h1>New Sale</h1>
+    <p id="instructions">To keep your price fair, please compare with other sources.
+    Please also provide the URL to an image of your book's cover. <a id="toggle_details" href="#">How?</a></p>
+    {% if error or form.errors %}<div class="error_box">
+        {{ error }}
+        {{ form.course.errors }}
+        {{ form.title.errors }}
+        {{ form.isbn.errors }}
+        {{ form.condition.errors }}
+        {{ form.price.errors }}
+        {{ form.image.errors }}
+        {{ form.expires.errors }}
+        {{ form.matches_official.errors }}
+        {{ form.notes.errors }}
+    </div>{% endif %}
+    <div id="instructions_details">
+        <ol>
+            <li>Search <a href="http://images.google.com/" target="_blank">Google Images </a> for your book's title.</li>
+            <li>Click on the image of the cover that matches your version of the book.</li>
+            <li>Click "Full-size image" on the right-hand side of the page.</li>
+            <li>Copy the URL from the address bar at the top of your browser.</li>
+            <li>Paste the URL into the box labeled "Image".</li>
+        </ol>
+    </div>
+    <form action="/sale/new/" method="POST">{% csrf_token %}
+    <div class="row">
+    <div class="column">
+        <label for="id_course">Course:</label>{{ form.course }}<br />
+        <label for="id_title">Title:</label>{{ form.title }}<br/>
+        <label for="id_isbn">ISBN-13:</label>{{ form.isbn }}
+        <label for="id_condition">Condition:</label>{{ form.condition }}<br />
+        <label for="id_price">Price:</label>${{ form.price }}
+        <label for="id_image">Image:</label>{{ form.image }}<br />
+        This sale offer will expire in {{ form.expires }} day(s). <a id="toggle_expires" href="#">Why expire?</a><br />
+        <div id="expires_details">When a sale expires, the buyer with the highest offer is automatically chosen for you. If no one has offered to purchase your book, the expiration date will simply be extended 1 week and you will be sent a notification warning you that no one has offered to buy your book yet.</div>
+        {{ form.matches_official }}<label for="id_matches_official">This book matches the one found on MBS Direct.</label><br />
+    </div>
+    <div class="column">
+        <label for="id_notes">Notes:</label><br />
+        {{ form.notes }}<br />
+    </div>
+    </div>
+    {% if facebook %}<input type="checkbox" id="id_facebook" name="facebook" /><label for="id_facebook">Post on Facebook</label>{% endif %}
+    <input type="submit" id="submit" value="Sell" />
+    </form>
+</div>
+{% endblock main %}

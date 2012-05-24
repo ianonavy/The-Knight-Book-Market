@@ -1,0 +1,60 @@
+subject = "%s Sale Expired" % site.name
+            body = ("Hello, %s.\n\nYour sale for %s has expired, but no "
+                    "one offered to buy it. However, you may create a new "
+                    "listing free of charge.\n\nSincerely,\n%s" %
+                    (self.sale.merchant.get_full_name(), self.sale.title,
+                     main_admin_name))
+            email = EmailMessage(subject, body, [self.sale.merchant.email])
+            email.send()
+            
+            
+            
+            subject = "%s Sold at %s" % (self.sale.title, site.name)
+            buyer_name = self.buyer.get_full_name()
+            body = ("Congratulations again, %s!\n\nFor future reference regarding "
+                    "your sale of %s, you can contact  %s at %s" %
+                    (self.sale.merchant.get_full_name(), self.sale.title, buyer_name,
+                     chosen_offer.buyer.email))
+                     
+                     
+body += ". The sale was for %s\n\nSincerely,\n%s" % \
+            (currency(chosen_offer.price), main_admin_name)
+        EmailMessage(subject, body, [sale.merchant.email]).send()
+
+        subject = "%s Sale Chosen!" % site.name
+        body = ("Congratulations, %s!\n\nYour offer to purchase %s for"
+                " %s has been accepted. You may contact %s at %s" %
+                (chosen_offer.buyer.get_full_name(), sale.title,
+                 currency(chosen_offer.price), sale.merchant.get_full_name(),
+                 sale.merchant.email))
+                 
+                 
+                 subject = "%s Offer Declined" % site.name
+                body = ("Dear %s,\n\nUnfortunately, your offer to "
+                        "purchase %s from %s has been declined. Please "
+                        "continue to browse the site as someone else may "
+                        "create a new listing for the book you need. "
+                        "Thanks for using our site!\n\nSincerely,\n%s" %
+                        (offer.buyer.get_full_name(), offer.sale.title,
+                         offer.sale.merchant.get_full_name(),
+                         main_admin_name))
+                         
+                         
+                         
+message = 'Congratulations on selling your book! You can contact %s at %s'\
+                    % (buyer_name, chosen_offer.buyer.email)
+                    
+                    
+                    site = Site.objects.get(id=settings.SITE_ID)
+            email_subject = "%s User Activation" % site.name
+            email_body = ("Hello, %s, and thanks for signing up for an "
+                          "account at %s!\n\nTo activate your "
+                          "account, please click this link within 48 "
+                          "hours: \n\nhttp://%s/login/%s"
+                          % (user.username, site.domain, site.domain,
+                             new_profile.activation_key))
+
+            send_mail(email_subject,
+                      email_body,
+                      'settings.EMAIL_HOST_USER',
+                      [user.email])
