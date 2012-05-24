@@ -10,7 +10,7 @@ from django.template.context import RequestContext
 from core.models import UserProfile
 #from socialregistration.models import FacebookProfile
 from django_facebook.models import FacebookProfileModel
-#import facebook
+from django_facebook.api import *
 from knightbookmarket import settings
 
 
@@ -75,26 +75,29 @@ def generate_new_key(user):
 
 
 
-def share(request, message):
+def share(request, message, link, name, picture):
     facebook_graph = get_facebook_graph(request)
     if facebook_graph:
-        
         try:
-            graph.set('me/feed', message=message)
+            facebook_graph.set('me/feed', message=message, name=name, 
+                               link=link, picture=picture)
         except:
             raise
 
 
 def share_sale(request, sale):
-    share(request, "I'm selling a book at the Knight Book Market!", {
-        "name": title_case(sale.title.encode('utf8')),
-        "link": "http://%s/browse/%d/" %
-            (Site.objects.get(id=settings.SITE_ID).name, sale.id),
-        "caption": "Price: $%.2f | Course: %s" % (sale.price,
-                                                  title_case(sale.course)),
-        "description": "Condition: %s %s" % (sale.condition, sale.notes),
-        "picture": "http://%s%s" % (Site.objects.get_current().domain,
-                                    sale.image.url) })
+    title = title_case(sale.title.encode('utf8'))
+    name = title
+    condition = sale.condition.lower()
+    price = sale.price
+    course = title_case(sale.course)
+    message = "I'm selling %s %s at the Knight Book Market for $%.2f! It's for %s." % (
+        title, condition, price, course
+    )
+    link = "http://%s/browse/%d/" % (Site.objects.get_current().domain, sale.id)
+    picture = "http://%s%s" % (Site.objects.get_current().domain,
+                               sale.image.url)
+    share(request, message, link, name, picture)
 
 
 pattern = re.compile(r'[a-zA-Z]')

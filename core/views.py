@@ -28,7 +28,7 @@ from core.models import UserProfile, Course, Sale, Offer
 from core.utils import message_page, generate_new_key,\
     error_page, get_remote_ip, load_page, share_sale, \
     title_case, currency
-from knightbookmarket.settings import SITE_ROOT
+from knightbookmarket.settings import SITE_ROOT, STATIC_ROOT
 #from socialregistration.models import FacebookProfile
 from django_facebook.api import *
 
@@ -285,6 +285,8 @@ def new_sale(request):
     form = SaleForm()
     error = ""
     
+    facebook = (get_facebook_graph(request) != None)
+    
     if request.method == "POST":
         data = request.POST.copy()
         data['merchant'] = request.user.id
@@ -296,9 +298,9 @@ def new_sale(request):
             sale.expires = form.cleaned_data['expires']
 
             url = request.POST.get('image', '')
-            if url == '':
+            if url == '' or len(url) > 1000:
                 sale.image = File(open(
-                    os.path.join(SITE_ROOT, 'static/img/book_placeholder.gif'))
+                    os.path.join(STATIC_ROOT, 'img/book_placeholder.gif'))
                 )
 
             else:
@@ -332,7 +334,7 @@ def new_sale(request):
                 pass
 
             return index(request, flash=message)
-    return load_page(request, 'new_sale.html', {'form': form, 'error': error})
+    return load_page(request, 'new_sale.html', {'form': form, 'error': error, 'facebook': facebook})
 
 
 @login_required

@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'core',
     'django_facebook',
+    'django_evolution',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

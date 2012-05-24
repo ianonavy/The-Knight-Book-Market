@@ -67,7 +67,7 @@ class Sale(models.Model):
     condition = models.CharField(max_length=13, choices=CONDITION_CHOICES)
     title = models.CharField(max_length=50)
     isbn = models.CharField(max_length=13, blank=True, null=True)
-    image = models.ImageField(upload_to="images/books/")
+    image = models.ImageField(upload_to="images/books/", max_length=1000)
     price = models.FloatField()
     expires = models.DateField(blank=True, null=True)
     notes = models.CharField(max_length=1000, blank=True, null=True)
