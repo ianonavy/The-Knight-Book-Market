@@ -13,7 +13,7 @@
     <script src="/static/js/html5.js" type="text/javascript"></script>
     {% block extrahead %}{% endblock %}
 </head>
-<!--[if lt IE 9]><p>Sorry, your browser is not supported! Please try using a different browsersuch as <a href="http://www.google.com/chrome">Google Chrome</a> or <a href="http://www.getfirefox.com/">Mozilla Firefox</a>. If you really want to stick with Internet Explorer, please <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home"> upgrade your browser</a> to at least IE 9.</p><![endif]-->
+<!--[if lt IE 9]><p>Sorry, your browser is not supported! Please try using a different browser such as <a href="http://www.google.com/chrome">Google Chrome</a> or <a href="http://www.getfirefox.com/">Mozilla Firefox</a>. If you really want to stick with Internet Explorer, please <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home"> upgrade your browser</a> to at least IE 9.</p><![endif]-->
 
 {% block body %}
 <body class="{% block bodyclass %}{% endblock %} {% if user and user.is_active %}user{% else %}guest{% endif %}">

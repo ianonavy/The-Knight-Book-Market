@@ -43,19 +43,19 @@ urlpatterns = patterns('core.views',
     (r'^signup/$', 'signup'),
     (r'^signup/facebook/$', direct_to_template, {'template':
         'core/signup_facebook.html'}),
-    (r'^terms/$', direct_to_template, {'template': 'core/terms.html'}),
+    (r'^terms/$', direct_to_template, {'template': 'terms.html'}),
     (r'^signup/resend_key/(?P<username>.*)$', 'resend_key'),
     (r'^signup/confirmed/$', 'signup_confirmed'),
 
-    (r'^about/$', direct_to_template, {'template': 'core/about.html'}),
-    (r'^donate/$', direct_to_template, {'template': 'core/donate.html'}),
+    (r'^about/$', direct_to_template, {'template': 'about.html'}),
+    (r'^donate/$', direct_to_template, {'template': 'donate.html'}),
     (r'^contact/$', 'contact'),
     (r'^report/$', 'report'),
     (r'^report/(?P<id>\d+)/$', 'report'),
 
     (r'^browse/$', 'browse'),
     (r'^browse/(?P<id>\d+)/$', 'browse'),
-    (r'^buy/$', direct_to_template, {'template': 'core/buy.html'}),
+    (r'^buy/$', direct_to_template, {'template': 'buy.html'}),
     
     (r'^sale/new/$', 'new_sale'),
     (r'^sale/cancel/(?P<id>\d+)/$', 'cancel_sale'),
