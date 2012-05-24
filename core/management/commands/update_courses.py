@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from django.core.management.base import BaseCommand, CommandError
-from bookmarket.models import Course
+from core.models import Course
 
 class Command(BaseCommand):
     args = ''

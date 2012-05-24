@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %} | Sign Up{% endblock title %}
+
+{% block links %}{% endblock links %}
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/signup.css" />
+{% endblock %}
+
+{% block content %}
+    <h1>Sign Up</h1><div id="signup_facebook">FACEBOOK BUTTON</div>
+
+    {% include "bookmarket/disclaimers.html" %}
+    <form action="/signup/" id="signup" method="POST">{% csrf_token %}
+    {% if error or form.errors %}<div class="error_box">
+        {{ error }}
+        {{ form.first_name.errors }}
+        {{ form.last_name.errors }}
+        {{ form.username.errors }}
+        {{ form.password.errors }}
+        {{ form.email.errors }}
+        {{ form.phone.errors }}
+        {{ form.non_field_errors }}
+    </div>{% endif %}
+    <div class="col3">
+        <h2>Account</h2>
+        {{ form.username }}
+        {{ form.password }}
+        {{ form.confirm_password }}
+    </div>
+    <div class="col3">
+        <h2>Full Name</h2>
+        {{ form.first_name }}
+        {{ form.last_name }}
+    </div>
+    <div class="col3">
+        <h2>Contact</h2>
+        {{ form.email }}
+        {{ form.confirm_email }}
+        {{ form.phone }}
+    </div>
+    <p>By clicking "Join", submitting this form, or connecting this site to my Facebook account, I state that I have read, understand and agree to the above statements and this site's <a href="/terms/" tabindex="8">Terms of Service and Privacy Policy</a>.</p>
+    <input type="submit" id="submit" value="Join" />
+    </form>
+{% endblock content %}

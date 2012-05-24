@@ -1,0 +1,38 @@
+#main, #search {
+    padding: 2em;
+}
+
+#main {
+    text-align: center;
+}
+
+table, tr, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    width: 100%;
+}
+
+table tr:first-child {
+    font-weight: bold;
+}
+
+.title {
+    font-style: italic;
+}
+
+.expires_soon {
+    color: #f00;
+    font-weight: bold;
+}
+
+label {
+    display: inline;
+    font-weight: bold;
+}
+
+#search p {
+    display: inline;
+}

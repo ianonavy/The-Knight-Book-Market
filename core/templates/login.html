@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} | Log In{% endblock title %}
+
+{% block links %}{% endblock links %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css" />
+{% endblock %}
+
+{% block extrahead %}
+<!--
+<meta property="og:image" content="myimage.jpg" />
+<meta property="og:title" content="my custom title for facebook" />
+-->
+{% endblock %}
+
+{% block content %}
+        {% if error %}<div class="error_box">{{ error }}</div>{% endif %}
+        <form action="/login/{{ key }}{% if next %}/?next={{ next }}{% endif %}" method="POST">{% csrf_token %}
+            <label>Username: <input type="text" name="username" id="username" value="{{ username }}" /></label>
+            <label>Password: <input type="password" name="password" id="password" /></label>
+            <a href="/account/reset/">Forgot Password</a>
+            <input type="hidden" name="next" value="{{ next }}" />
+            <input type="submit" value="Log in" />
+        </form>
+        {% if noverify %}<a href="/signup/resend_key/{{ username }}">Resend Activation Key</a><br />{% else %}
+        <a href="/signup/">Sign up</a>{% endif %}
+        FACEBOOK BUTTON
+{% endblock content %}

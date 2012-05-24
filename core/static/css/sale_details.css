@@ -1,0 +1,53 @@
+#main {
+    padding: 2em;
+}
+
+h1.title {
+    font-style: italic;
+}
+
+#cover {
+    float: left;
+    margin: 0 12px 0 0;
+}
+
+.merchant, .price {
+    font-weight: bold;
+}
+
+label {
+    display: inline;
+    font-weight: bold;
+}
+
+table, tr, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    width: 100%;
+}
+
+#signup {
+    width: auto;
+}
+
+#offer {
+    font-size: 1.5em;
+}
+
+#offer #price {
+    margin: 0;
+    width: 5em;
+}
+
+#offer #submit {
+    margin: 0;
+    width: auto;
+}
+
+#accept, #cancel {
+    padding: .5em;
+    font-size: .6em;
+}

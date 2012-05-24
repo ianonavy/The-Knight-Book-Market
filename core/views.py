@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-"""Django views for the bookmarket application."""
+"""Django views for the core application."""
 
-import settings
+import knightbookmarket.settings
 import urllib
 import urllib2
 import re
@@ -22,10 +22,10 @@ from django.contrib.sites.models import Site
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 from django.db.models import Max
-from bookmarket.forms import SignupForm, ContactForm, ReportForm, SaleForm, \
+from core.forms import SignupForm, ContactForm, ReportForm, SaleForm, \
     SearchForm, AccountForm
-from bookmarket.models import UserProfile, Course, Sale, Offer
-from bookmarket.utils import message_page, generate_new_key,\
+from core.models import UserProfile, Course, Sale, Offer
+from core.utils import message_page, generate_new_key,\
     error_page, get_remote_ip, load_page, share_sale, \
     title_case, currency
 from knightbookmarket.settings import SITE_ROOT

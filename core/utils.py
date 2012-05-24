@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-"""Utility module to hold useful methods for the bookmarket application."""
+"""Utility module to hold useful methods for the core application."""
 
 import datetime
 import re
 from django.contrib.sites.models import Site
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
-from bookmarket.models import UserProfile
+from core.models import UserProfile
 #from socialregistration.models import FacebookProfile
 from django_facebook.models import FacebookProfileModel
 #import facebook
@@ -41,7 +41,7 @@ def load_page(request, template, extra={}):
     except:
         facebook = None
     return render_to_response(
-        'bookmarket/%s' % template,
+        '%s' % template,
         dict({
             'facebook': facebook
         }.items() + extra.items()),

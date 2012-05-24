@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %} | Sign Up{% endblock title %}
+
+{% block links %}{% endblock links %}
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/signup_facebook.css" />
+{% endblock %}
+
+{% block content %}
+    <h1>Sign Up with Facebook</h1>
+
+    <h2>Information we use from Facebook:</h2>
+    <ul class="disclaimers">
+        <li>Your full name.</li>
+        <li>Your email address (for us to email you).</li>
+        <li>Your wall (if you want to share that you're selling a boook).</li>
+    </ul>
+    {% include "bookmarket/disclaimers.html"%}
+    <p>By clicking the button below and connecting this site to my Facebook account, I state that I have read, understand and agree to the above statements and this site's <a href="/terms/" tabindex="8">Terms of Service and Privacy Policy</a>.</p>
+    <!--{% load facebook_tags %}{% facebook_button %}{% facebook_js %}-->
+    {% include 'django_facebook/_facebook_js.html' %}
+    <form action="{% url facebook_connect %}?facebook_login=1" method="post">
+        <a href="javascript:void(0);" style="font-size: 20px;" onclick="F.connect(this.parentNode);">Register, login or connect with facebook</a>
+        <input type="hidden" value="{{ request.path }}" name="next" />
+    </form>
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load bookmarket_extras %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/browse.css" />
+{% endblock %}
+
+{% block main %}
+<div id="main" class="row section">
+    <div class="column">
+    <h1>Books For Sale</h1>
+    <table>
+        <tr>
+            <td>&nbsp;</td><td>Title</td><td>Course</td><td>Price</td><td>Seller</td><td>Offers</td><td>Offer Expires</td>
+        </tr>
+        {% for sale in sales %}
+        <tr>
+            <td>{% if sale.image %}<img src="{{ sale.image|scale:'64x64' }}" alt="Image of {{ sale.title }}" />{% endif %}</td>
+            <td><a href="/browse/{{ sale.id }}/" class="title">{{ sale.title|title_case }}</a></td>
+            <td>{{ sale.course|title_case }}</td>
+            <td>{{ sale.price|currency }}</td>
+            <td>{{ sale.merchant.get_full_name }}</td>
+            <td>{{ sale.offers }}</td>
+            <td>{% if sale.expires_soon%}<span class="expires_soon">{{ sale.expires }}</span>{% else %}{{ sale.expires }}{% endif %}</td>
+        </tr>
+        {% empty %}
+            <tr><td colspan="7">Sorry, no books were found.</td></tr>
+        {% endfor %}</table>
+    <p>{% if page > 1 %}<a href="{{ prev }}" class="arrow">&larr;</a> {% endif %}Page: {{ page }}/{{ pages }} {% if page < pages %}<a href="{{ next }}" class="arrow">&rarr;</a>{% endif %}</p>
+    </div>
+</div>
+<div id="search" class="row section">
+    <div class="column">
+    <h2>Find a particular book</h2>
+    <p>Fill in whatever information you know, and we'll do our best to find it for you. We recommend only entering the course, but it's up to you.</p>
+    {% if error or form.errors %}<div class="error_box">
+        {{ error }}
+        {{ form.title.errors }}
+        {{ form.isbn.errors }}
+        {{ form.course.errors }}
+        {{ form.seller.errors }}
+    </div>{% endif %}
+    <form id="search_form" action="/browse/" method="get">
+        <div><label for="id_title">Title: </label>{{ form.title }}
+        <label for="id_isbn">ISBN: </label>{{ form.isbn }}</div>
+
+        <div><label for="id_course">Course: </label>{{ form.course }}</div>
+        <input id="submit" type="submit" value="Find" />
+    </form>
+    </div>
+</div>
+{% endblock main %}

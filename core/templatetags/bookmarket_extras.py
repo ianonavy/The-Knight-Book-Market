@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-"""Custom tags and filters for bookmarket templates."""
+"""Custom tags and filters for core templates."""
 
 from django import template
 from django.conf import settings
-from bookmarket import utils
+from core import utils
 import locale
 import os
 

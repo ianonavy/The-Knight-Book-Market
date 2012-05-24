@@ -14,7 +14,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.localflavor.us.forms import USPhoneNumberField
 from django.contrib.auth.models import User
-from bookmarket.models import Sale, Course, UserProfile
+from core.models import Sale, Course, UserProfile
 
 __author__ = "Ian Adam Naval"
 __copyright__ = "Copyright 2011 Ian Adam Naval"

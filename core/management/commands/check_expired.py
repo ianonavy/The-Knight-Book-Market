@@ -5,9 +5,9 @@ from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Max
-from bookmarket.models import Sale, Offer, UserProfile
-from bookmarket.utils import currency
-from knightbookmarket import settings
+from core.models import Sale, Offer, UserProfile
+from core.utils import currency
+from knightcore import settings
 
 class Command(BaseCommand):
     args = ''

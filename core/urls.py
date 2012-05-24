@@ -9,7 +9,7 @@ from django.contrib.auth.views import password_reset, password_reset_done, \
     password_reset_confirm, password_reset_complete, password_change, \
     password_change_done
 from django.views.generic.simple import direct_to_template
-from bookmarket.forms import CustomSetPasswordForm
+from core.forms import CustomSetPasswordForm
 
 __author__ = "Ian Adam Naval"
 __copyright__ = "Copyright 2011 Ian Adam Naval"
@@ -23,7 +23,7 @@ __status__ = "Development"
 __date__ = "13 August 2011"
 
 
-urlpatterns = patterns('bookmarket.views',
+urlpatterns = patterns('core.views',
     (r'^$', 'index'),
 
     (r'^login/(?P<activation_key>.*)$', 'login_view'),
@@ -42,20 +42,20 @@ urlpatterns = patterns('bookmarket.views',
 
     (r'^signup/$', 'signup'),
     (r'^signup/facebook/$', direct_to_template, {'template':
-        'bookmarket/signup_facebook.html'}),
-    (r'^terms/$', direct_to_template, {'template': 'bookmarket/terms.html'}),
+        'core/signup_facebook.html'}),
+    (r'^terms/$', direct_to_template, {'template': 'core/terms.html'}),
     (r'^signup/resend_key/(?P<username>.*)$', 'resend_key'),
     (r'^signup/confirmed/$', 'signup_confirmed'),
 
-    (r'^about/$', direct_to_template, {'template': 'bookmarket/about.html'}),
-    (r'^donate/$', direct_to_template, {'template': 'bookmarket/donate.html'}),
+    (r'^about/$', direct_to_template, {'template': 'core/about.html'}),
+    (r'^donate/$', direct_to_template, {'template': 'core/donate.html'}),
     (r'^contact/$', 'contact'),
     (r'^report/$', 'report'),
     (r'^report/(?P<id>\d+)/$', 'report'),
 
     (r'^browse/$', 'browse'),
     (r'^browse/(?P<id>\d+)/$', 'browse'),
-    (r'^buy/$', direct_to_template, {'template': 'bookmarket/buy.html'}),
+    (r'^buy/$', direct_to_template, {'template': 'core/buy.html'}),
     
     (r'^sale/new/$', 'new_sale'),
     (r'^sale/cancel/(?P<id>\d+)/$', 'cancel_sale'),

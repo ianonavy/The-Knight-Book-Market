@@ -1,0 +1,28 @@
+h1 {
+    text-align: center;
+    margin: .5em 0;
+}
+
+h2 {
+    color: #333;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+input[type="submit"] {
+    width: auto;
+}
+
+.connect-button input {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    display: inline;
+}
+
+.connect-button {
+    width: 194px;
+    margin: 0 auto;
+}

@@ -8,7 +8,7 @@ Django administration side.
 """
 
 from django.contrib import admin
-from bookmarket.models import UserProfile, Course, Sale, Offer
+from core.models import UserProfile, Course, Sale, Offer
 
 
 __author__ = "Ian Adam Naval"

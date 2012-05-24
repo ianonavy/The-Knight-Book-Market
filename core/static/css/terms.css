@@ -1,0 +1,7 @@
+p, li {
+    font-size: .8em;
+}
+
+ol li ol li {
+    font-size: 100%;
+}

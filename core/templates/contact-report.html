@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="/static/css/contact-report.css" />
+{% endblock %}
+
+{% block content %}
+    {% if error or form.errors %}<div class="error_box">
+        {{ error }}
+        {{ form.name.errors }}
+        {{ form.email.errors }}
+        {{ form.reason.errors }}
+        {{ form.message.errors }}
+    </div>{% endif %}
+    <h1>{% if report %}Report Problem{% else %}Contact Us{% endif %}</h1>
+    <form action="{% if report %}/report/{% if id %}{{ id }}/{% endif %}{% else %}/contact/{% endif %}" method="POST">{% csrf_token %}
+    <label for="id_name">Name: </label>{{ form.name }}<br />
+    <label for="id_email">Email: </label>{{ form.email }}<br />
+    <label for="id_reason">Reason: </label>{{ form.reason }}<br />
+    {{ form.message }}
+    <input id="submit" type="submit" value="Send" />
+    </form>
+{% endblock content %}

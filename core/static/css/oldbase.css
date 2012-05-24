@@ -1,0 +1,242 @@
+body {
+    margin: 0 auto;
+    width: 780px;
+    background: url('../img/concrete_wall.png') #313435;
+    color: #fff;
+    font: 100% "Nobile", sans-serif;
+}
+
+/* Global style definitions */
+.center { margin: 0 auto; }
+.left { float: left;}
+.right { float: right; }
+.hidden { display: none; }
+
+section, footer {
+    background-color: rgba(0,0,0, .25);
+    color: #fff;
+    text-shadow: rgba(255,255,255,.15) 0 1px 0;
+    padding: 1em;
+    margin: 1em 0;
+
+    -moz-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+section :first-child {
+    margin-top: 0;
+}
+
+a {
+    color: rgb(255, 200, 0);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #666;
+}
+
+h1, h2, h3 {
+    color: hsl(200, 5%, 38%);
+    margin: 0;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+.fine_print {
+    margin: 0;
+    padding: 0;
+    font-size: .67em;
+}
+
+input, select, textarea {
+    background: rgba(0,0,0,.33);
+    border: 1px solid rgba(0,0,0,.8);
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: .8em;
+    color: inherit;
+    font-style: inherit;
+    text-shadow: inherit;
+    display: inline;
+    margin: 4px 0;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4), 0 1px 0 rgba(255, 255, 255, .1);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4), 0 1px 0 rgba(255, 255, 255, .1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4), 0 1px 0 rgba(255, 255, 255, .1);
+}
+
+.connect-button input {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    display: inline;
+}
+
+textarea {
+    font: inherit;
+}
+
+input[type="submit"], .button {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .1);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .1);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .1);
+}
+
+input[type="submit"]:active, .button:active {
+    background: rgba(0,0,0,.5);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4), 0 1px 0 rgba(255, 255, 255, .1);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4), 0 1px 0 rgba(255, 255, 255, .1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4), 0 1px 0 rgba(255, 255, 255, .1);
+    -webkit-transform: translateY(1px);
+}
+
+option {
+    background: #000;
+    color: inherit;
+}
+
+label {
+    display: block;
+}
+
+.button {
+    display: inline-block;
+    background: rgba(0,0,0,.6);
+    padding: 6px;
+    width: 6em;
+    text-align: center;
+    margin: 6px;
+    text-shadow: rgba(0,0,0,.5) 0 -1px 1px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.button:hover {
+    background: hsla(195, 18%, 19%, .8);
+    color: #fff;
+    text-shadow: none;
+}
+
+.button:active {
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 4px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 4px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.error, .errorlist {
+    margin: 0;
+    padding: 0;
+    color: #c00;
+    font-style: italic;
+}
+
+.error_box {
+    background-color: #c33;
+    border: #c00 solid 2px;
+    margin: 0 0 1em 0;
+    padding: .25em;
+    font-size: .85em;
+    color: #fff;
+}
+
+.error_box .errorlist {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-style: normal;
+}
+
+.errorlist {
+    list-style: none;
+}
+
+header {
+    position: relative;
+    margin: 10px 20px -1em;
+    padding: 0;
+}
+
+#logo {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+#logo h1 {
+    margin: 0;
+}
+
+#logo a {
+    font: 5em 'Yellowtail';
+    margin: 0;
+    color: rgba(255, 200, 0, .9);
+    text-shadow: 0 1px 2px rgba(255, 200, 0, .5);
+}
+
+#links {
+    width: 100%;
+    text-align: right;
+}
+
+#links a {
+    text-align: right;
+    color: #aaa;
+    text-decoration: inherit;
+    font: .8em Helvetica, Arial, sans-serif;
+}
+
+#links a:hover {
+    color: inherit;
+}
+
+#main {
+    padding: 2em;
+    position: relative;
+}
+
+footer {
+    font: .8em Helvetica, Arial, sans-serif;
+}
+
+footer p {
+    margin: 0;
+}
+
+#copyright {
+    float: right;
+}
+
+#footer-nav, #footer-nav a {
+    color: rgba(255,255,255,.5);
+}
+
+#footer-nav a:visited {
+    color: rgba(255,255,255,.5);
+}
+
+#footer-nav a:hover {
+    color: #fff;
+}
+
+/* IE 9 hack */
+/* match placeholder/watermark padding to border+padding for input element */
+label.placeholder {
+    cursor: text;
+    padding: 4px 4px 4px 4px;
+    color: #999999;
+}
+
+/* html5 placeholder support */
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color:#999999;
+}
+
+input:placeholder, textarea:placeholder {
+    color:#999999;
+}
