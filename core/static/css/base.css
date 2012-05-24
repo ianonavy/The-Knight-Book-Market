@@ -2,7 +2,7 @@ body {
     margin: 0 auto;
     width: 960px;
     background: /*url('../img/concrete_wall.png')*/ #ccc;
-    color: #777;
+    color: #555;
     font: 100% "Nobile", sans-serif;
 }
 
@@ -281,7 +281,7 @@ input[type="submit"]:active, .button:active {
 }
 
 #footer a:hover {
-    color: #26344C;
+    color: #666;
 }
 
 /* IE 9 hack */
