@@ -16,17 +16,6 @@ from django.contrib.localflavor.us.forms import USPhoneNumberField
 from django.contrib.auth.models import User
 from core.models import Sale, Course, UserProfile
 
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "15 August 2011"
-
 
 class SignupForm(forms.Form):
     """

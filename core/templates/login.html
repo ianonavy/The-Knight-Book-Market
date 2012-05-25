@@ -9,10 +9,7 @@
 {% endblock %}
 
 {% block extrahead %}
-<!--
-<meta property="og:image" content="myimage.jpg" />
-<meta property="og:title" content="my custom title for facebook" />
--->
+    {% include 'django_facebook/_facebook_js.html' %}
 {% endblock %}
 
 {% block content %}
@@ -24,7 +21,10 @@
             <input type="hidden" name="next" value="{{ next }}" />
             <input type="submit" value="Log in" />
         </form>
-        {% if noverify %}<a href="/signup/resend_key/{{ username }}">Resend Activation Key</a><br />{% else %}
-        <a href="/signup/">Sign up</a>{% endif %}
-        FACEBOOK BUTTON
+        <form action="{% url facebook_connect %}?facebook_login=1" method="post">
+	    <a href="javascript:void(0);" onclick="F.connect(this.parentNode);"><img src="{{ STATIC_URL }}img/facebook_signin.png" /></a>
+	    <input type="hidden" value="{{ request.path }}" name="next" />
+	</form>
+	{% if noverify %}<a href="/signup/resend_key/{{ username }}">Resend Activation Key</a><br />{% else %}
+	<a href="/signup/">Sign up</a>{% endif %}
 {% endblock content %}

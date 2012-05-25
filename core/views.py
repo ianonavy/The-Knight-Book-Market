@@ -15,6 +15,7 @@ from django.contrib.auth import logout, authenticate
 from django.http import HttpResponseRedirect
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth.views import login
 from django.contrib.auth.decorators import login_required
@@ -28,20 +29,8 @@ from core.models import UserProfile, Course, Sale, Offer
 from core.utils import message_page, generate_new_key,\
     error_page, get_remote_ip, load_page, share_sale, \
     title_case, currency
-from knightbookmarket.settings import SITE_ROOT
-#from socialregistration.models import FacebookProfile
-#import facebook
-
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "17 October 2011"
+from django_facebook.api import get_facebook_graph
+from knightbookmarket.settings import SITE_ROOT, STATIC_ROOT
 
 
 def index(request, flash=None):
@@ -69,7 +58,7 @@ def index(request, flash=None):
                 profile.save()
         except:
             error = "There was an error loading your user profile!"
-
+        
         # Sort sales into "selling" and "sold" accordingly
         for sale in Sale.objects.filter(merchant=request.user):
             offers = Offer.objects.filter(sale=sale)
@@ -141,6 +130,13 @@ def signup(request):
                             get_remote_ip(request))
 
             # Send an email with the confirmation link
+            site = Site.objects.get_current()
+            subject = "%s User Activation" % site.name
+            body = ("Hello, %s, and thanks for signing up for an account at %s!"
+                    "\n\nTo activate your account, click this link within 48 hours:"
+                    "\n\nhttp://%s/login/%s" % (user.username, site.domain, site.domain,
+                    new_profile.activation_key))
+            send_mail(subject, body, 'settings.EMAIL_HOST_USER', [user.email])
             
             # Redirect to a confirmation page.
             return HttpResponseRedirect('/signup/confirmed/')
@@ -262,6 +258,7 @@ def login_view(request, activation_key=""):
                              u'Please contact an administrator or create a '
                              u'new account. We are sorry for any '
                              u'inconvenience.')
+                raise
         else:
             error = u'Invalid username and password.'
 
@@ -296,6 +293,8 @@ def new_sale(request):
     form = SaleForm()
     error = ""
     
+    facebook = (get_facebook_graph(request) != None)
+    
     if request.method == "POST":
         data = request.POST.copy()
         data['merchant'] = request.user.id
@@ -307,9 +306,9 @@ def new_sale(request):
             sale.expires = form.cleaned_data['expires']
 
             url = request.POST.get('image', '')
-            if url == '':
+            if url == '' or len(url) > 1000:
                 sale.image = File(open(
-                    os.path.join(SITE_ROOT, 'static/img/book_placeholder.gif'))
+                    os.path.join(STATIC_ROOT, 'img/book_placeholder.gif'))
                 )
 
             else:
@@ -343,7 +342,7 @@ def new_sale(request):
                 pass
 
             return index(request, flash=message)
-    return load_page(request, 'new_sale.html', {'form': form, 'error': error})
+    return load_page(request, 'new_sale.html', {'form': form, 'error': error, 'facebook': facebook})
 
 
 @login_required
@@ -535,7 +534,14 @@ def report(request, id=None):
 @login_required
 def account(request):
     user = request.user
-    profile = UserProfile.objects.get(user=request.user)
+    
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except:
+        profile = UserProfile()
+        profile.new(user, ip_address=get_remote_ip(request))
+        profile.save()
+    
     form = AccountForm({'phone': profile.phone, 'email': user.email})
     error = ''
 

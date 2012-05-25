@@ -13,17 +13,6 @@ from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.db import models
 
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "13 August 2011"
-
 
 def currency(value):
     # Original filter code found at  http://djangosnippets.org/snippets/2365/
@@ -78,7 +67,7 @@ class Sale(models.Model):
     condition = models.CharField(max_length=13, choices=CONDITION_CHOICES)
     title = models.CharField(max_length=50)
     isbn = models.CharField(max_length=13, blank=True, null=True)
-    image = models.ImageField(upload_to="images/books/")
+    image = models.ImageField(upload_to="images/books/", max_length=1000)
     price = models.FloatField()
     expires = models.DateField(blank=True, null=True)
     notes = models.CharField(max_length=1000, blank=True, null=True)
@@ -211,7 +200,7 @@ class UserProfile(models.Model):
     last_login_ip = models.IPAddressField()
     first_login = models.BooleanField()
     
-    def new(self, user, phone, ip_address):
+    def new(self, user, phone="", ip_address=""):
         salt = md5(str(random.random())).hexdigest()[:5]
     
         self.user = user

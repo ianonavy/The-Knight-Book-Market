@@ -5,24 +5,14 @@
 import datetime
 import re
 from django.contrib.sites.models import Site
+from django.core.mail import EmailMessage
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from core.models import UserProfile
 #from socialregistration.models import FacebookProfile
 from django_facebook.models import FacebookProfileModel
-#import facebook
+from django_facebook.api import *
 from knightbookmarket import settings
-
-__author__ = "Ian Adam Naval"
-__copyright__ = "Copyright 2011 Ian Adam Naval"
-__credits__ = []
-
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ian Adam Naval"
-__email__ = "ianonavy@gmail.com"
-__status__ = "Development"
-__date__ = "13 August 2011"
 
 
 def load_page(request, template, extra={}):
@@ -86,32 +76,29 @@ def generate_new_key(user):
 
 
 
-def share(request, message, attachment={}):
-    user = facebook.get_user_from_cookie(request.COOKIES,
-        getattr(settings, 'FACEBOOK_APP_ID', settings.FACEBOOK_API_KEY),
-        settings.FACEBOOK_SECRET_KEY)
-
-    if user:
-        graph = facebook.GraphAPI(user["access_token"])
-        profile = graph.get_object("me")
-        friends = graph.get_connections("me", "friends")
-
+def share(request, message, link, name, picture):
+    facebook_graph = get_facebook_graph(request)
+    if facebook_graph:
         try:
-            graph.put_wall_post(message, attachment)
+            facebook_graph.set('me/feed', message=message, name=name, 
+                               link=link, picture=picture)
         except:
             raise
 
 
 def share_sale(request, sale):
-    share(request, "I'm selling a book at the Knight Book Market!", {
-        "name": title_case(sale.title.encode('utf8')),
-        "link": "http://%s/browse/%d/" %
-            (Site.objects.get(id=settings.SITE_ID).name, sale.id),
-        "caption": "Price: $%.2f | Course: %s" % (sale.price,
-                                                  title_case(sale.course)),
-        "description": "Condition: %s %s" % (sale.condition, sale.notes),
-        "picture": "http://%s%s" % (Site.objects.get_current().domain,
-                                    sale.image.url) })
+    title = title_case(sale.title.encode('utf8'))
+    name = title
+    condition = sale.condition.lower()
+    price = sale.price
+    course = title_case(sale.course)
+    message = "I'm selling %s %s at the Knight Book Market for $%.2f! It's for %s." % (
+        title, condition, price, course
+    )
+    link = "http://%s/browse/%d/" % (Site.objects.get_current().domain, sale.id)
+    picture = "http://%s%s" % (Site.objects.get_current().domain,
+                               sale.image.url)
+    share(request, message, link, name, picture)
 
 
 pattern = re.compile(r'[a-zA-Z]')

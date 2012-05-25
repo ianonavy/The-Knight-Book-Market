@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Max
 from core.models import Sale, Offer, UserProfile
 from core.utils import currency
-from knightcore import settings
+from knightbookmarket import settings
 
 class Command(BaseCommand):
     args = ''
