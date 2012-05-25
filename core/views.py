@@ -399,16 +399,20 @@ def browse(request, id=-1):
         sales = sales.order_by('price', 'title', 'merchant__last_name')
 
         error = ""
+        
+        title = ""
+        isbn = ""
+        course = ""
 
         form = SearchForm(request.GET)
         if form.is_valid():
-            title = form.cleaned_data['title'] or None
-            isbn = form.cleaned_data['isbn'] or None
-            course = form.cleaned_data['course'] or None
+            title = form.cleaned_data['title'] or ""
+            isbn = form.cleaned_data['isbn'] or ""
+            course = form.cleaned_data['course'] or ""
 
-            if title: sales = sales.filter(title__icontains=title)
-            if isbn: sales = sales.filter(isbn__exact=isbn)
-            if course: sales = sales.filter(course__exact=course)
+            if title != "": sales = sales.filter(title__icontains=title)
+            if isbn != "": sales = sales.filter(isbn__exact=isbn)
+            if course != "": sales = sales.filter(course__exact=course)
 
         my_sales = []
         for sale in sales:
