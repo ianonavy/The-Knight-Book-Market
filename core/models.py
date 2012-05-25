@@ -200,7 +200,7 @@ class UserProfile(models.Model):
     last_login_ip = models.IPAddressField()
     first_login = models.BooleanField()
     
-    def new(self, user, phone, ip_address):
+    def new(self, user, phone="", ip_address=""):
         salt = md5(str(random.random())).hexdigest()[:5]
     
         self.user = user

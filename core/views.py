@@ -15,6 +15,7 @@ from django.contrib.auth import logout, authenticate
 from django.http import HttpResponseRedirect
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth.views import login
 from django.contrib.auth.decorators import login_required
@@ -28,9 +29,8 @@ from core.models import UserProfile, Course, Sale, Offer
 from core.utils import message_page, generate_new_key,\
     error_page, get_remote_ip, load_page, share_sale, \
     title_case, currency
+from django_facebook.api import get_facebook_graph
 from knightbookmarket.settings import SITE_ROOT, STATIC_ROOT
-#from socialregistration.models import FacebookProfile
-from django_facebook.api import *
 
 
 def index(request, flash=None):
@@ -130,6 +130,13 @@ def signup(request):
                             get_remote_ip(request))
 
             # Send an email with the confirmation link
+            site = Site.objects.get_current()
+            subject = "%s User Activation" % site.name
+            body = ("Hello, %s, and thanks for signing up for an account at %s!"
+                    "\n\nTo activate your account, click this link within 48 hours:"
+                    "\n\nhttp://%s/login/%s" % (user.username, site.domain, site.domain,
+                    new_profile.activation_key))
+            send_mail(subject, body, 'settings.EMAIL_HOST_USER', [user.email])
             
             # Redirect to a confirmation page.
             return HttpResponseRedirect('/signup/confirmed/')
@@ -251,6 +258,7 @@ def login_view(request, activation_key=""):
                              u'Please contact an administrator or create a '
                              u'new account. We are sorry for any '
                              u'inconvenience.')
+                raise
         else:
             error = u'Invalid username and password.'
 
@@ -526,7 +534,14 @@ def report(request, id=None):
 @login_required
 def account(request):
     user = request.user
-    profile = UserProfile.objects.get(user=request.user)
+    
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except:
+        profile = UserProfile()
+        profile.new(user, ip_address=get_remote_ip(request))
+        profile.save()
+    
     form = AccountForm({'phone': profile.phone, 'email': user.email})
     error = ''
 
