@@ -85,6 +85,7 @@ WSGI_APPLICATION = 'knightbookmarket.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(SITE_ROOT, 'core/templates'),
+    os.path.join(PROJECT_ROOT, 'templates')
 )
 
 INSTALLED_APPS = (

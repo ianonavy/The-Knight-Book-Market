@@ -30,8 +30,8 @@ urlpatterns = patterns('core.views',
     (r'^account/change_password/done/$', password_change_done),
 
     (r'^signup/$', 'signup'),
-    (r'^signup/facebook/$', direct_to_template, {'template':
-        'core/signup_facebook.html'}),
+    (r'^signup/facebook/', direct_to_template, {'template':
+        'signup_facebook.html'}),
     (r'^terms/$', direct_to_template, {'template': 'terms.html'}),
     (r'^signup/resend_key/(?P<username>.*)$', 'resend_key'),
     (r'^signup/confirmed/$', 'signup_confirmed'),

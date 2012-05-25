@@ -7,8 +7,18 @@
     <link rel="stylesheet" type="text/css" href="/static/css/signup.css" />
 {% endblock %}
 
+{% block extrahead %}
+    {% include 'django_facebook/_facebook_js.html' %}
+{% endblock %}
+
 {% block content %}
-    <h1>Sign Up</h1><div id="signup_facebook">FACEBOOK BUTTON</div>
+    <h1>Sign Up</h1>
+    <div id="signup_facebook">
+        <form action="{% url facebook_connect %}?facebook_login=1" method="post">
+	    <a href="javascript:void(0);" onclick="F.connect(this.parentNode);"><img src="{{ STATIC_URL }}img/facebook_signin.png" /></a>
+	    <input type="hidden" value="{{ request.path }}" name="next" />
+	</form>
+    </div>
 
     {% include "disclaimers.html" %}
     <form action="/signup/" id="signup" method="POST">{% csrf_token %}

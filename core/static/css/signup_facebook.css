@@ -9,10 +9,6 @@ h2 {
     font-weight: bold;
 }
 
-input[type="submit"] {
-    width: auto;
-}
-
 .connect-button input {
     border: none;
     border-radius: 0;
