@@ -2,6 +2,7 @@
 <html lang="{{ LANGUAGE_CODE|default:"en-us"}}" class="no-js">
 <head>
     <meta charset="UTF-8" />
+    <meta name="google-site-verification" content="BKyjrgR8no01Pw59efUDdl56T8qn_u9OSNb1ukZwBIY" />
     <title>The Knight Book Market{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/static/css/base.css{% endblock %}" />
@@ -46,7 +47,19 @@
     </div>
     {% endblock main %}
 
-    <!--{% block ad %}<div id="ad" class="row section"><img src="https://www.google.com/adsense/static/en_US/images/728x15_4.gif" alt="AdSense placeholder" /></div>{% endblock ad%}-->
+    {% block ad %}
+        <div id="ad" class="row section">
+            <script type="text/javascript">
+                <!--google_ad_client = "ca-pub-2410618972065703";
+                /* Knight Book Market */
+                google_ad_slot = "0618557709";
+                google_ad_width = 728;
+                google_ad_height = 15;
+                //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+        </div>
+    {% endblock ad%}
 
     {% block footer %}
     <div id="footer">
