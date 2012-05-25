@@ -134,10 +134,13 @@ class Sale(models.Model):
             self.save()
         
     def check_expired(self):
+        offers = Offer.objects.filter(sale=self)
         if len(offers) == 0:
             self.postpone_expiration()
+            return True
         else:
-            self.sale.expire()
+            self.expire()
+            return False
     
     def postpone_expiration(self):
         self.expires = self.expires + timedelta(days=7)
@@ -145,37 +148,23 @@ class Sale(models.Model):
         
         # Send e-mail about expiration being postponed.
         site = Site.objects.get_current()
-        subject = "%s Sale Expired" % site.name
-        body = ("Hello, %s.\n\nYour sale for %s has expired, but no "
-                "one offered to buy it. Your sale has been postponed 7 "
-                "days, but you may want to consider cancelling it."
-                "\n\nSincerely,\n%s" %
-                (self.merchant.get_full_name(), self.title,
-                 main_admin_name))
+        subject = "%s Sale Reminder" % site.name
+        body = ("Hi, %s!\n\nYour sale for %s has reached its "
+            "expiration date, but no one offered to buy it. The "
+            "deadline has been extended to %s. If this is not the "
+            "first time you've seen a message like this, you may want "
+            "to consider cancelling the sale.\n\nSincerely,\n%s" %
+            (sale.merchant.first_name, sale.title,
+             sale.expires.strftime('%B %d, %Y'), main_admin_name))
         EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.merchant.email]).send()
 
-    def expire(self, chosen_offer):
+    def expire(self):
         self.status = Sale.EXPIRED
         self.save()
         
-        # Send email about sale expiration.
-        site = Site.objects.get_current()
-        subject = "%s Sold at %s" % (self.sale.title, site.name)
-        buyer_name = chosen_offer.get_full_name()
-        body = ("Congratulations on selling your book, %s! Your sale listing expired \n"
-                "and the highest offer was automatically chosen. \n\nFor future reference"
-                " regarding your sale of %s, you can contact %s at %s" % \
-                (self.merchant.get_full_name(), self.title, buyer_name,
-                 chosen_offer.buyer.email))
-        try:
-            buyer_profile = UserProfile.objects.get(user=self.buyer)
-            if buyer_profile.phone:
-                body += " or %s" % buyer_profile.phone
-        except:
-            pass
-        body += ". The sale was for %s\n\nSincerely,\n%s" % \
-            (currency(chosen_offer.price), main_admin_name)
-        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.merchant.email]).send()
+        offers = Offer.objects.filter(sale=self)
+        highest_offer = offers.order_by('-price')[0]
+        self.accept_offer(highest_offer)
 
 
     def __unicode__(self):
@@ -234,7 +223,6 @@ class Offer(models.Model):
         body += ". The sale was for %s\n\nSincerely,\n%s" % \
             (currency(self.price), main_admin_name)
         EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.buyer.email]).send()
-        print "Sent mail that offer was accepted."
         
     def decline(self):
         self.status = Offer.DECLINED

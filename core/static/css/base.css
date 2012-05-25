@@ -202,7 +202,7 @@ input[type="submit"]:active, .button:active {
     color: inherit;
 }
 
-#main {
+#main, #past {
     background: url('../img/handmadepaper.png');
     padding: 2em;
 }
