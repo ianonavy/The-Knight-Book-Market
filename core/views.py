@@ -302,7 +302,7 @@ def new_sale(request):
 
         form = SaleForm(data)
         if form.is_valid():
-            sale = form.save()
+            sale = form.save(commit=False)
             sale.expires = form.cleaned_data['expires']
 
             url = request.POST.get('image', '')
