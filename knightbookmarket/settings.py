@@ -148,6 +148,8 @@ FACEBOOK_APP_SECRET = next_password()
 
 LOGIN_REDIRECT_URL = '/'
 
+DEFAULT_FROM_EMAIL = 'knightbookmarket@gmail.com'
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'knightbookmarket@gmail.com'

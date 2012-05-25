@@ -475,11 +475,18 @@ def new_offer(request, id=-1):
 
 @login_required
 def accept_offer(request, id=-1):
-    chosen_offer = Offer.objects.get(id=id)
-    chosen_offer.accept()
+    try:
+        chosen_offer = Offer.objects.get(id=id)
+    except:
+        return error_page(request, 'Offer does not exist.')
     
     if not chosen_offer.available():
         return error_page(request, 'Offer no longer available!')
+    else:
+        chosen_offer.sale.accept_offer(chosen_offer)
+        message = 'Congratulations on selling your book! You can contact %s at %s'\
+                    % (chosen_offer.buyer.get_full_name(),
+                       chosen_offer.buyer.email)
 
     return index(request, flash=message)
 

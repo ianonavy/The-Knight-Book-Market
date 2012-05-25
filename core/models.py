@@ -9,9 +9,15 @@ Contains code to encapsulate a mentor, a team and a connection between the two.
 import datetime
 import random
 from hashlib import md5
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
+from django.contrib.sites.models import Site
+from django.core.mail import EmailMessage
 from django.db import models
+
+
+main_admin_name = "Ian A. Naval"
 
 
 def currency(value):
@@ -87,14 +93,32 @@ class Sale(models.Model):
         self.notes = notes
     
     def accept_offer(self, chosen_offer):
-        self.sale.status = Sale.SOLD
+        self.status = Sale.SOLD
         self.save()
         
-        offer.accept()
-        offers = Offer.objects.filter(sale=self.sale) \
+        chosen_offer.accept()
+        offers = Offer.objects.filter(sale=self) \
                               .exclude(id=chosen_offer.id)
         for offer in offers:
             offer.decline()
+        
+        # Send email about sale.
+        site = Site.objects.get_current()
+        subject = "%s Sold at %s" % (self.title, site.name)
+        buyer_name = chosen_offer.buyer.get_full_name()
+        body = ("Congratulations again on selling your book, %s! \n\nFor future reference"
+                " regarding your sale of %s, you can contact %s at %s" % \
+                (self.merchant.get_full_name(), self.title, buyer_name,
+                 chosen_offer.buyer.email))
+        try:
+            buyer_profile = UserProfile.objects.get(user=self.buyer)
+            if buyer_profile.phone:
+                body += " or %s" % buyer_profile.phone
+        except:
+            pass
+        body += ". The sale was for %s\n\nSincerely,\n%s" % \
+            (currency(chosen_offer.price), main_admin_name)
+        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.merchant.email]).send()
     
     def cancel(self):
         offers = Offer.objects.filter(sale=self)
@@ -105,7 +129,7 @@ class Sale(models.Model):
         self.save()
         
     def remove(self):
-        if self.status == SOLD:
+        if self.status == Sale.SOLD:
             self.status = Sale.SOLD_AND_REMOVED
             self.save()
         
@@ -116,14 +140,43 @@ class Sale(models.Model):
             self.sale.expire()
     
     def postpone_expiration(self):
-        # Send e-mail about expiration being postponed.
-        self.expires = self.expires + timedelta(days=3)
+        self.expires = self.expires + timedelta(days=7)
         self.save()
-    
-    def expire(self):
+        
+        # Send e-mail about expiration being postponed.
+        site = Site.objects.get_current()
+        subject = "%s Sale Expired" % site.name
+        body = ("Hello, %s.\n\nYour sale for %s has expired, but no "
+                "one offered to buy it. Your sale has been postponed 7 "
+                "days, but you may want to consider cancelling it."
+                "\n\nSincerely,\n%s" %
+                (self.merchant.get_full_name(), self.title,
+                 main_admin_name))
+        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.merchant.email]).send()
+
+    def expire(self, chosen_offer):
         self.status = Sale.EXPIRED
         self.save()
-        # Send email about offer expiration.
+        
+        # Send email about sale expiration.
+        site = Site.objects.get_current()
+        subject = "%s Sold at %s" % (self.sale.title, site.name)
+        buyer_name = chosen_offer.get_full_name()
+        body = ("Congratulations on selling your book, %s! Your sale listing expired \n"
+                "and the highest offer was automatically chosen. \n\nFor future reference"
+                " regarding your sale of %s, you can contact %s at %s" % \
+                (self.merchant.get_full_name(), self.title, buyer_name,
+                 chosen_offer.buyer.email))
+        try:
+            buyer_profile = UserProfile.objects.get(user=self.buyer)
+            if buyer_profile.phone:
+                body += " or %s" % buyer_profile.phone
+        except:
+            pass
+        body += ". The sale was for %s\n\nSincerely,\n%s" % \
+            (currency(chosen_offer.price), main_admin_name)
+        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.merchant.email]).send()
+
 
     def __unicode__(self):
         """Returns a unique string identifier for this sale."""
@@ -165,15 +218,54 @@ class Offer(models.Model):
         self.status = Offer.ACCEPTED
         self.save()
         # Send e-mail that the offer was accepted.
+        site = Site.objects.get_current()
+        subject = "%s Offer Chosen!" % site.name
+        body = ("Congratulations, %s!\n\nYour offer to purchase %s for"
+                " %s has been accepted. You may contact %s at %s" %
+                (self.buyer.get_full_name(), self.sale.title,
+                 currency(self.price), self.sale.merchant.get_full_name(),
+                 self.sale.merchant.email))
+        try:
+            merchant_profile = UserProfile.objects.get(user=self.sale.merchant)
+            if merchant_profile.phone:
+                body += " or %s" % merchant_profile.phone
+        except:
+            pass
+        body += ". The sale was for %s\n\nSincerely,\n%s" % \
+            (currency(self.price), main_admin_name)
+        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.buyer.email]).send()
+        print "Sent mail that offer was accepted."
         
     def decline(self):
         self.status = Offer.DECLINED
         self.save()
         # Send e-mail that the offer was declined.
+        subject = "%s Offer Declined" % site.name
+        body = ("Dear %s,\n\nUnfortunately, your offer to "
+                "purchase %s from %s has been declined. Please "
+                "continue to browse the site as someone else may "
+                "create a new listing for the book you need. "
+                "Thanks for using our site!\n\nSincerely,\n%s" %
+                (self.buyer.get_full_name(), self.sale.title,
+                 self.sale.merchant.get_full_name(),
+                 main_admin_name))
+        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.buyer.email]).send()
     
     def cancel_by_sale(self):
         self.cancel()
-        # Send e-mail about cancelled sale.
+        # Send e-mail that the offer was declined.
+        site = Site.objects.get_current()
+        subject = "%s Offer Declined" % site.name
+        body = ("Dear %s,\n\nUnfortunately, your offer to "
+                "purchase %s from %s has been declined because the "
+                "sale was cancelled. Please continue to browse the "
+                "site as someone else may create a new listing for "
+                "the book you need. Thanks for using our site!\n\n"
+                "Sincerely,\n%s" %
+                (self.buyer.get_full_name(), self.sale.title,
+                 self.sale.merchant.get_full_name(),
+                 main_admin_name))
+        EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.buyer.email]).send()
     
     def cancel(self):
         self.status = Offer.CANCELLED
