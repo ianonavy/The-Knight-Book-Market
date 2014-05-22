@@ -83,12 +83,11 @@ def share(request, message, link, name, picture):
             facebook_graph.set('me/feed', message=message, name=name, 
                                link=link, picture=picture)
         except:
-            raise
+            pass
 
 
 def share_sale(request, sale):
     title = title_case(sale.title.encode('utf8'))
-    name = title
     condition = sale.condition.lower()
     price = sale.price
     course = title_case(sale.course)
@@ -98,7 +97,7 @@ def share_sale(request, sale):
     link = "http://%s/browse/%d/" % (Site.objects.get_current().domain, sale.id)
     picture = "http://%s%s" % (Site.objects.get_current().domain,
                                sale.image.url)
-    share(request, message, link, name, picture)
+    share(request, message, link, title, picture)
 
 
 pattern = re.compile(r'[a-zA-Z]')

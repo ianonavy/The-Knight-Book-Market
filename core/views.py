@@ -302,7 +302,7 @@ def new_sale(request):
 
         form = SaleForm(data)
         if form.is_valid():
-            sale = form.save()
+            sale = form.save(commit=False)
             sale.expires = form.cleaned_data['expires']
 
             url = request.POST.get('image', '')
@@ -337,7 +337,7 @@ def new_sale(request):
             try:
                 if request.POST['facebook']:
                     share_sale(request, sale)
-                    message += ' A post has been added to your wall.'
+                    message += ' A post has been added to your timeline.'
             except:
                 pass
 
@@ -399,16 +399,20 @@ def browse(request, id=-1):
         sales = sales.order_by('price', 'title', 'merchant__last_name')
 
         error = ""
+        
+        title = ""
+        isbn = ""
+        course = ""
 
         form = SearchForm(request.GET)
         if form.is_valid():
-            title = form.cleaned_data['title'] or None
-            isbn = form.cleaned_data['isbn'] or None
-            course = form.cleaned_data['course'] or None
+            title = form.cleaned_data['title'] or ""
+            isbn = form.cleaned_data['isbn'] or ""
+            course = form.cleaned_data['course'] or ""
 
-            if title: sales = sales.filter(title__icontains=title)
-            if isbn: sales = sales.filter(isbn__exact=isbn)
-            if course: sales = sales.filter(course__exact=course)
+            if title != "": sales = sales.filter(title__icontains=title)
+            if isbn != "": sales = sales.filter(isbn__exact=isbn)
+            if course != "": sales = sales.filter(course__exact=course)
 
         my_sales = []
         for sale in sales:
@@ -475,11 +479,18 @@ def new_offer(request, id=-1):
 
 @login_required
 def accept_offer(request, id=-1):
-    chosen_offer = Offer.objects.get(id=id)
-    chosen_offer.accept()
+    try:
+        chosen_offer = Offer.objects.get(id=id)
+    except:
+        return error_page(request, 'Offer does not exist.')
     
     if not chosen_offer.available():
         return error_page(request, 'Offer no longer available!')
+    else:
+        chosen_offer.sale.accept_offer(chosen_offer)
+        message = 'Congratulations on selling your book! You can contact %s at %s'\
+                    % (chosen_offer.buyer.get_full_name(),
+                       chosen_offer.buyer.email)
 
     return index(request, flash=message)
 
@@ -496,7 +507,7 @@ def contact(request):
         contact_form = ContactForm(request.POST)
         if contact_form.is_valid():
             send_mail('Knight Book Market Support',
-                "Reason: %s\nFrom: %s\n\n%s" % (request.POST['email'],
+                "From: %s\nReason: %s\n\n%s" % (request.POST['email'],
                                                request.POST['reason'],
                                                request.POST['message']),
                 'settings.EMAIL_HOST_USER',
@@ -516,8 +527,8 @@ def report(request, id=None):
             except:
                 sale = "Not found."
             send_mail('Knight Book Market Report',
-                "Reason: %s\n"
                 "From: %s\n"
+                "Reason: %s\n"
                 "Reported Sale: %s (ID: %s)\n\n"
                 "%s" % (request.POST['email'], request.POST['reason'],
                         sale, id, request.POST['message']),
