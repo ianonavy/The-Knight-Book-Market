@@ -143,7 +143,7 @@ class Sale(models.Model):
             return False
     
     def postpone_expiration(self):
-        self.expires = self.expires + timedelta(days=7)
+        self.expires = self.expires + datetime.timedelta(days=7)
         self.save()
         
         # Send e-mail about expiration being postponed.
@@ -154,8 +154,8 @@ class Sale(models.Model):
             "deadline has been extended to %s. If this is not the "
             "first time you've seen a message like this, you may want "
             "to consider cancelling the sale.\n\nSincerely,\n%s" %
-            (sale.merchant.first_name, sale.title,
-             sale.expires.strftime('%B %d, %Y'), main_admin_name))
+            (self.merchant.first_name, self.title,
+             self.expires.strftime('%B %d, %Y'), main_admin_name))
         EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [self.merchant.email]).send()
 
     def expire(self):
